@@ -1,0 +1,31 @@
+fieldset {
+    margin: 30px;
+	padding: 30px;
+    border:1px solid #666;
+    border-radius:8px;
+    box-shadow:0 0 10px #666;
+}
+legend {
+    float:left;
+    margin-top:-20px;
+}
+legend + * {
+    clear:both;
+}
+/* Div Container nebeneinander anordnen http://pascalkremp.com/div-elemente-nebeneinander-anordnen/ */
+.clearfix:before,
+.clearfix:after {
+content: " ";
+display: table;
+}
+.clearfix:after {
+clear: both;
+}
+.clearfix {
+*zoom: 1;
+}
+
+.left {
+float: left;
+width: 33%;
+}
