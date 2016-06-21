@@ -7,13 +7,14 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	   
 	
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+		<script   src="https://code.jquery.com/jquery-1.12.3.js"   integrity="sha256-1XMpEtA4eKXNNpXcJ1pmMPs8JV+nwLdEqwiJeCQEkyc="   crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	<link rel='stylesheet' href='style.css' />
+	<link href="simple-sidebar.css" rel="stylesheet">
 	
 
-	<script   src="https://code.jquery.com/jquery-1.12.3.js"   integrity="sha256-1XMpEtA4eKXNNpXcJ1pmMPs8JV+nwLdEqwiJeCQEkyc="   crossorigin="anonymous"></script>
+
 	<script src="http://code.highcharts.com/highcharts.js" type="text/javascript"></script>
 	
 <script src="https://code.highcharts.com/modules/data.js"></script>
@@ -26,7 +27,8 @@
 					table: 'pricedata'
 				},
 				chart: {
-					zoomType: 'x'
+					zoomType: 'x',
+					height: 300
 				},
 				title: {
 					text: ''
@@ -86,7 +88,8 @@
 					text: ''
 				},
 				chart: {
-					type: 'line'
+					type: 'line',
+					height: 200
 				},
 				yAxis: {
 					allowDecimals: false,
@@ -147,7 +150,7 @@
 								options.data.table = 'cpu1';
 								options.yAxis.title.text = 'CPU Usage in %';
 								$('#chartcpu').highcharts(options);
-							} else {
+							} else if(size == 500000){
 								//1 1 500000
 								options.data.table = 'memory2';
 								options.yAxis.title.text = 'Memory Usage in mb';
@@ -158,6 +161,11 @@
 								options.data.table = 'cpu2';
 								options.yAxis.title.text = 'CPU Usage in %';
 								$('#chartcpu').highcharts(options);
+							} else {
+								options.data.table = '';
+								while(chartmem.series.length > 0) chartmem.series[0].remove(true);
+								while(chartlat.series.length > 0) chartlat.series[0].remove(true);
+								while(chartcpu.series.length > 0) chartcpu.series[0].remove(true);
 							}
 						} else {
 							if(size == 350) {
@@ -166,15 +174,20 @@
 								while(chartmem.series.length > 0) chartmem.series[0].remove(true);
 								while(chartlat.series.length > 0) chartlat.series[0].remove(true);
 								while(chartcpu.series.length > 0) chartcpu.series[0].remove(true);
-							} else {
+							} else if(size == 500000){
 								//1 10 500000
+								options.data.table = '';
+								while(chartmem.series.length > 0) chartmem.series[0].remove(true);
+								while(chartlat.series.length > 0) chartlat.series[0].remove(true);
+								while(chartcpu.series.length > 0) chartcpu.series[0].remove(true);
+							}else {
 								options.data.table = '';
 								while(chartmem.series.length > 0) chartmem.series[0].remove(true);
 								while(chartlat.series.length > 0) chartlat.series[0].remove(true);
 								while(chartcpu.series.length > 0) chartcpu.series[0].remove(true);
 							}
 						}
-					} else {
+					} else if(ups == 100) {
 						if(clients == 1) {
 							if(size == 350) {
 								//100 1 350
@@ -194,7 +207,7 @@
 								while(chartlat.series.length > 0) chartlat.series[0].remove(true);
 								while(chartcpu.series.length > 0) chartcpu.series[0].remove(true);
 							}
-						} else {
+						} else if(clients == 10){
 							if(size == 350) {
 								//100 10 350
 								options.data.table = 'memory4';
@@ -213,7 +226,17 @@
 								while(chartlat.series.length > 0) chartlat.series[0].remove(true);
 								while(chartcpu.series.length > 0) chartcpu.series[0].remove(true);
 							}
+						} else {
+								options.data.table = '';
+								while(chartmem.series.length > 0) chartmem.series[0].remove(true);
+								while(chartlat.series.length > 0) chartlat.series[0].remove(true);
+								while(chartcpu.series.length > 0) chartcpu.series[0].remove(true);
 						}
+					} else {
+						options.data.table = '';
+								while(chartmem.series.length > 0) chartmem.series[0].remove(true);
+								while(chartlat.series.length > 0) chartlat.series[0].remove(true);
+								while(chartcpu.series.length > 0) chartcpu.series[0].remove(true);
 					}
 
 			}
@@ -230,16 +253,26 @@
 					text: ''
 				},
 				chart: {
-					zoomType: 'x'
+					zoomType: 'x',
+					height: 300
 				},
 				yAxis: {
 					allowDecimals: false,
 					title: {
 						text: 'Costs per Month'
 					},
-				    type: 'logarithmic'
+				    type: 'logarithmic',
+					labels: {
+						formatter: function () {
+							return this.axis.defaultLabelFormatter.call(this)+ '€';
+						}            
+					}
 				},
-
+				tooltip: {
+					valueDecimals: 2,
+					valuePrefix: '€',
+					valueSuffix: ' EUR'
+				},
 				xAxis: {
 				title: {
 						text: 'Messages per Month'
@@ -264,8 +297,39 @@
   </head>
 
   <body onload="">
+  <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <h2 align="center">
+                        Independent Variables
+                    </h2>
+                </li>
+                <li style="width: 90%">
+                    <form id="parameters" oninput="numerisch.value=UpS.value;numerisch2.value=clients.value;numerisch3.value=msize.value" method="post" action="/dataGenParam">
 
-<div class="container">
+			<h3 data-toggle="tooltip" title="Hooray!">Units per Second: <output name="numerisch">1</output></h3>
+			<input id="UpS" name="Ups" type="range" class=fullwidth min="1" max="100" value="1" style="width: 100%; height: 10px;"/>
+
+			<h3 data-toggle="tooltip" title="How many clients to start in parallel.!">Clients: <output name="numerisch2">1</output></h3>
+			<input id="clients" name="clients" type="range" class=fullwidth min="1" max="10" value="1" style="width: 100%; height: 10px;"/>
+			
+			<h3 data-toggle="tooltip" title="Message Size">Message Size (byte): <output name="numerisch3">1</output></h3>
+			<input id="msize" name="msize" type="range" class=fullwidth min="350" max="500000" value="350" style="width: 100%; height: 10px;"/>
+								
+			<h3>Laufzeit</h3>
+			<input id="hourAday" name="maxSec" type="text" placeholder="24" value="24"  style="width: 20%; height: 30px;"/> h/Day  <p>    </p>
+			<input id="daysAmonth" name="maxSec" type="text" placeholder="30" value="30"  style="width: 20%; height: 30px;"/> Days/Month  <p>    </p>
+			
+			<input type="button" value="Calculate Price" onClick="calcPrice(UpS.value)" />
+			</form>
+                </li>
+
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+<div class="container ">
 
 	<ul class="nav nav-tabs nav-justified">
       <li  id="dataTab"><a data-toggle="tab" href="#dataGeneration">Price Konfiguration</a></li>
@@ -520,29 +584,7 @@
         </div>
     </div>
 
-    <div class="tab-pane fade in active" id="measurement">
-		<fieldset>
-			<h2 align=center>Independent Variables</h2>
-			<form id="parameters" oninput="numerisch.value=UpS.value;numerisch2.value=clients.value;numerisch3.value=msize.value" method="post" action="/dataGenParam">
-
-			<h3 data-toggle="tooltip" title="Hooray!">Units per Second: <output name="numerisch">1</output></h3>
-			<input id="UpS" name="Ups" type="range" class=fullwidth min="1" max="100" step="99" value="1" style="width: 100%; height: 10px;"/>
-
-			<h3 data-toggle="tooltip" title="How many clients to start in parallel.!">Clients: <output name="numerisch2">1</output></h3>
-			<input id="clients" name="clients" type="range" class=fullwidth min="1" max="10" step="9" value="1" style="width: 100%; height: 10px;"/>
-			
-			<h3 data-toggle="tooltip" title="Message Size">Message Size (byte): <output name="numerisch3">1</output></h3>
-			<input id="msize" name="msize" type="range" class=fullwidth min="350" max="500000" step="499650" value="350" style="width: 100%; height: 10px;"/>
-								
-			<h2>Laufzeit</h2>
-			<input id="hourAday" name="maxSec" type="text" placeholder="24" value="24"  style="width: 10%;"/> h/Day  <p>    </p>
-			<input id="daysAmonth" name="maxSec" type="text" placeholder="30" value="30"  style="width: 10%;"/> Days/Month  <p>    </p>
-			
-			<input type="button" value="Calculate Price" onClick="calcPrice(UpS.value)" />
-			</form>
-		</fieldset>
-
-		<div class="left" style="width: 100%" id="data">
+		<div class="left" style="width: 100%; padding-top: 20px" id="data">
       		<fieldset>
       			<legend>Price:</legend>
 				<ul id="chartprice"></ul>
@@ -550,22 +592,22 @@
 			</fieldset>
 		</div>
 		
-		<div class="left" style="width: 50%" id="data">
+		<div class="left" style="width: 33%;" id="data">
       		<fieldset>
       			<legend>Memory Usage:</legend>
 				<ul id="chartmem"></ul>
 			</fieldset>
 		</div>
 		
-		<div class="left" style="width: 50%" id="data">
+		<div class="left" style="width: 34%" id="data">
       		<fieldset>
       			<legend>Latency:</legend>
-				<ul id="chartlat"></ul>
+				<ul id="chartlat" ></ul>
 
 			</fieldset>
 		</div>
 		
-		<div class="left" style="width: 50%" id="data">
+		<div class="left" style="width: 33%" id="data">
       		<fieldset>
       			<legend>CPU Usage:</legend>
 				<ul id="chartcpu"></ul>
