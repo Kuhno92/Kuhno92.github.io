@@ -107,13 +107,13 @@
 			
 			$(function () {
 				options.data.table = 'memory1';
-				options.yAxis.title.text = 'Memory Usage in mb';
+				options.yAxis.title.text = 'Memory Usage in mb ';
 				$('#chartmem').highcharts(options);
 				options.data.table = 'latency1';
-				options.yAxis.title.text = 'Latency Usage in ms';
+				options.yAxis.title.text = 'Latency Usage in ms ';
 				$('#chartlat').highcharts(options);
 				options.data.table = 'cpu1';
-				options.yAxis.title.text = 'CPU Usage in %';
+				options.yAxis.title.text = 'CPU Usage in % ';
 				$('#chartcpu').highcharts(options);
 			});
 		
@@ -330,7 +330,7 @@
         </div>
         <!-- /#sidebar-wrapper -->
 
-<div class="container ">
+<div class="container">
 
 	<ul class="nav nav-tabs nav-justified">
       <li  id="dataTab"><a data-toggle="tab" href="#dataGeneration">Price Konfiguration</a></li>
@@ -585,7 +585,10 @@
         </div>
     </div>
 
-		<div class="left" style="width: 100%; padding-top: 20px" id="data">
+    <div class="tab-pane fade in active" id="measurement">
+		
+
+		<div class="left" style="width: 100%" id="data">
       		<fieldset>
       			<legend>Price:</legend>
 				<ul id="chartprice"></ul>
@@ -593,7 +596,7 @@
 			</fieldset>
 		</div>
 		
-		<div class="left" style="width: 33%;" id="data">
+		<div class="left" style="width: 33%" id="data">
       		<fieldset>
       			<legend>Memory Usage:</legend>
 				<ul id="chartmem"></ul>
@@ -603,7 +606,7 @@
 		<div class="left" style="width: 34%" id="data">
       		<fieldset>
       			<legend>Latency:</legend>
-				<ul id="chartlat" ></ul>
+				<ul id="chartlat"></ul>
 
 			</fieldset>
 		</div>
