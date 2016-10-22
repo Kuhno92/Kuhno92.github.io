@@ -307,6 +307,8 @@
 			document.getElementById("cpuChart").style.width = "100%";
 
 			$("#sidebar-wrapper").hide();
+		} else {
+			openNav();
 		}
 	});
 
@@ -317,43 +319,54 @@
 	};
 
 	</script>
+
+	<script>
+		function openNav() {
+		    document.getElementById("mySidenav").style.width = "250px";
+		    $('#floatingButton').hide();
+		}
+
+		function closeNav() {
+		    document.getElementById("mySidenav").style.width = "0";
+		    $('#floatingButton').show();
+		}
+	</script>
   </head>
 
   <body onload="">
   <div id="wrapper">
   <!-- Sidebar -->
-  	<div id="sidebar-wrapper">
-            <ul class="sidebar-nav">
-                <li class="sidebar-brand">
+  		<div id="mySidenav" class="sidenav">
+  			<fieldset style="background-color:white;"">
+  				<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
                     <h2 align="center">
                         Independent Variables
                     </h2>
-                </li>
-                <li style="width: 90%">
                     <form id="parameters" oninput="numerisch.value=UpS.value;numerisch2.value=clients.value;numerisch3.value=msize.value" method="post" action="/dataGenParam">
 
-			<h3 data-toggle="tooltip" title="Hooray!">Units per Second: <output name="numerisch">1</output></h3>
-			<input id="UpS" name="Ups" type="range" class=fullwidth min="1" max="100" value="1" style="width: 100%; height: 10px;"/>
+					<h3 data-toggle="tooltip" title="Hooray!">Units per Second: <output name="numerisch">1</output></h3>
+					<input id="UpS" name="Ups" type="range" class=fullwidth min="1" max="100" value="1" style="width: 100%; height: 10px;"/>
 
-			<h3 data-toggle="tooltip" title="How many clients to start in parallel.!">Clients: <output name="numerisch2">1</output></h3>
-			<input id="clients" name="clients" type="range" class=fullwidth min="1" max="10" value="1" style="width: 100%; height: 10px;"/>
-			
-			<h3 data-toggle="tooltip" title="Message Size">Message Size (byte): <output name="numerisch3">1</output></h3>
-			<input id="msize" name="msize" type="range" class=fullwidth min="350" max="500000" value="350" style="width: 100%; height: 10px;"/>
-								
-			<h3>Laufzeit</h3>
-			<input id="hourAday" name="maxSec" type="text" placeholder="24" value="24"  style="width: 20%; height: 30px;"/> h/Day  <p>    </p>
-			<input id="daysAmonth" name="maxSec" type="text" placeholder="30" value="30"  style="width: 20%; height: 30px;"/> Days/Month  <p>    </p>
-			
-			<input type="button" value="Calculate Price" onClick="calcPrice(UpS.value)" />
-			</form>
-                </li>
+					<h3 data-toggle="tooltip" title="How many clients to start in parallel.!">Clients: <output name="numerisch2">1</output></h3>
+					<input id="clients" name="clients" type="range" class=fullwidth min="1" max="10" value="1" style="width: 100%; height: 10px;"/>
+					
+					<h3 data-toggle="tooltip" title="Message Size">Message Size (byte): <output name="numerisch3">1</output></h3>
+					<input id="msize" name="msize" type="range" class=fullwidth min="350" max="500000" value="350" style="width: 100%; height: 10px;"/>
+										
+					<h3>Laufzeit</h3>
+					<input id="hourAday" name="maxSec" type="text" placeholder="24" value="24"  style="width: 20%; height: 30px;"/> h/Day  <p>    </p>
+					<input id="daysAmonth" name="maxSec" type="text" placeholder="30" value="30"  style="width: 20%; height: 30px;"/> Days/Month  <p>    </p>
+					
+					<input type="button" value="Calculate Price" onClick="calcPrice(UpS.value)" />
+					</form>
+		    </fieldset>
+		</div> <!-- /#sidebar-wrapper -->
 
-            </ul>
-        </div>      
-  <!-- /#sidebar-wrapper -->
-
-<div class="container">
+		<!--floating sidenav button-->
+		<div id="floatingButton"; style="float:left;  top: 0px; left: 0px; opacity: 1;display: block;  padding:6px; position: fixed;z-index: 1;">
+		  <button type="button" class="btn btn-primary" onclick="openNav()">≡</button>
+		</div>
+		<div class="container">
 
 	<ul class="nav nav-tabs nav-justified">
       <li  id="dataTab"><a data-toggle="tab" href="#dataGeneration">Price Konfiguration</a></li>
@@ -614,21 +627,21 @@
 		<div class="left" style="width: 100%" id="data2">
       		<fieldset>
       			<legend>Price:</legend>
-				<ul id="chartprice"></ul>
+				<ul id="chartprice" style="margin-left: -58px; margin-bottom: -16px;"></ul>
 			</fieldset>
 		</div>
 		
 		<div class="left" style="width: 33%" id="memChart">
       		<fieldset>
       			<legend>Memory Usage:</legend>
-				<ul id="chartmem"></ul>
+				<ul id="chartmem" style="margin-left: -58px; margin-bottom: -16px;"></ul>
 			</fieldset>
 		</div>
 		
 		<div class="left" style="width: 33%" id="latChart">
       		<fieldset>
       			<legend>Latency:</legend>
-				<ul id="chartlat"></ul>
+				<ul id="chartlat" style="margin-left: -58px; margin-bottom: -16px;"></ul>
 
 			</fieldset>
 		</div>
@@ -636,7 +649,7 @@
 		<div class="left" style="width: 33%" id="cpuChart">
       		<fieldset>
       			<legend>CPU Usage:</legend>
-				<ul id="chartcpu"></ul>
+				<ul id="chartcpu" style="margin-left: -58px; margin-bottom: -16px;"></ul>
 
 			</fieldset>
 		</div>
